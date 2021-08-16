@@ -1,0 +1,34 @@
+<div class="container">
+    <mat-form-field appearance="legacy" style="width:50vw">
+        <mat-label>Department Name</mat-label>
+        <input matInput placeholder="Enter Department Name" [(ngModel)]="name">
+      </mat-form-field><br>
+    <button mat-raised-button color='primary' (click)="onSubmit()">Add Department</button>
+    <mat-table [dataSource]="Department" class="mat-elevation-z8">
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef>Department ID </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.eid}} </mat-cell>
+        </ng-container>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Department Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.depname}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i = index">
+              <button mat-mini-fab color="primary" (click)="onUpdate(i)" aria-label="Example icon button with a delete icon">
+              <mat-icon>update</mat-icon>
+            </button>
+              <button mat-mini-fab color="warn" (click)="onDelete(i)" aria-label="Example icon button with a delete icon">
+              <mat-icon>delete</mat-icon>
+            </button></mat-cell>
+        </ng-container>
+    
+      
+    
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      
+    </mat-table>
+    </div>
