@@ -23,6 +23,16 @@ app.post('/addemp', async (req,res)=>{
     }
 });
 
+app.post('/linketod', async (req,res)=>{
+    try {
+        const {empname,depname}=req.body;
+        const etod=await pool.query("INSERT INTO empdept(empname, depname) VALUES ($1,$2)",[empname,depname]);
+        res.json(etod);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 app.post('/adddept', async (req,res)=>{
     try {
         const {depname}=req.body;
@@ -42,6 +52,15 @@ app.get('/addemp', async (req,res)=>{
     }
 });
 
+app.get('/linketod', async (req,res)=>{
+    try {
+        const newemp=await pool.query("SELECT * FROM empdept");
+        res.json(newemp.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 app.get('/adddept', async (req,res)=>{
     try {
         const newdep=await pool.query("SELECT * FROM department");
@@ -55,6 +74,16 @@ app.get('/addemp/:id', async (req,res)=>{
     try {
         const {id} = req.params;
         const newemp=await pool.query("SELECT * FROM employee WHERE eid = $1",[id]);
+        res.json(newemp.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get('/linketod/:id', async (req,res)=>{
+    try {
+        const {id} = req.params;
+        const newemp=await pool.query("SELECT * FROM empdept WHERE edid = $1",[id]);
         res.json(newemp.rows[0]);
     } catch (err) {
         console.error(err.message);
@@ -82,6 +111,17 @@ app.put('/addemp/:id', async (req,res)=>{
     }
 });
 
+app.put('/linketod/:id', async (req,res)=>{
+    try {
+        const {id} = req.params;
+        const {empname,depname}=req.body;
+        const newemp=await pool.query("UPDATE empdept SET empname = $1, depname = $2 WHERE edid = $3",[empname,depname,id]);
+        res.json("updated!");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 app.put('/adddept/:id', async (req,res)=>{
     try {
         const {id} = req.params;
@@ -97,6 +137,16 @@ app.delete('/addemp/:id', async (req,res)=>{
     try {
         const {id} = req.params;
         const newemp=await pool.query("DELETE FROM employee WHERE eid = $1",[id]);
+        res.json("deleted!");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.delete('/linketod/:id', async (req,res)=>{
+    try {
+        const {id} = req.params;
+        const newemp=await pool.query("DELETE FROM empdept WHERE edid = $1",[id]);
         res.json("deleted!");
     } catch (err) {
         console.error(err.message);
